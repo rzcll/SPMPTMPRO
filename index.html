@@ -76,6 +76,18 @@
             border-color: rgba(79, 70, 229, 0.3) !important;
         }
 
+        /* Warna Transparan Khusus Kartu Upload */
+        .bg-glass-blue { background: rgba(59, 130, 246, 0.12) !important; border-color: rgba(59, 130, 246, 0.4) !important; }
+        .bg-glass-green { background: rgba(16, 185, 129, 0.12) !important; border-color: rgba(16, 185, 129, 0.4) !important; }
+        .bg-glass-red { background: rgba(244, 63, 94, 0.12) !important; border-color: rgba(244, 63, 94, 0.4) !important; }
+
+        /* Animasi Processing Loader Menarik */
+        .loader-bars div { animation: loader-bounce 1s infinite cubic-bezier(0.85, 0.25, 0.37, 0.85); transform-origin: bottom; }
+        .loader-bars div:nth-child(1) { animation-delay: -0.4s; }
+        .loader-bars div:nth-child(2) { animation-delay: -0.2s; }
+        .loader-bars div:nth-child(3) { animation-delay: 0s; }
+        @keyframes loader-bounce { 0%, 100% { transform: scaleY(0.3); opacity: 0.5; } 50% { transform: scaleY(1); opacity: 1; } }
+
         /* Tabel Hover */
         tbody tr { transition: all 0.2s ease; }
         tbody tr:hover { background-color: rgba(255,255,255,0.8); transform: scale(1.01); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 0.5rem; }
@@ -112,7 +124,7 @@
                 <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-[1.5rem] flex items-center justify-center shadow-lg shadow-indigo-500/30 mb-8 transform rotate-3">
                     <svg class="w-10 h-10 text-white transform -rotate-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 </div>
-                <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-purple-800 tracking-tight mb-3">SPM Pro.</h2>
+                <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 to-purple-800 tracking-tight mb-3 flex items-start">SPMPro<sup class="text-3xl text-orange-500 drop-shadow-sm ml-1">+</sup></h2>
                 <p class="text-sm font-medium text-slate-500 mb-10">Otomatisasi Laporan Standar Pelayanan Minimal Terintegrasi.</p>
                 
                 <div class="w-full relative group">
@@ -138,12 +150,12 @@
                     <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20">
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     </div>
-                    <span class="text-3xl font-black tracking-tight text-slate-800">SPM<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 italic">Pro</span></span>
+                    <span class="text-3xl font-black tracking-tight text-slate-800 flex items-start">SPM<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 italic">Pro</span><sup class="text-2xl text-orange-500 drop-shadow-sm ml-0.5">+</sup></span>
                 </div>
                 <div class="flex items-center gap-4 md:gap-8">
-                    <a href="https://drive.google.com/drive/folders/1fBxRFq9pSvSWCgWoeWJPrg5jqkCXK_MA" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl shadow-sm border border-indigo-200 transition-all font-bold text-sm hover:-translate-y-0.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
-                        <span class="hidden sm:inline">LAPORAN</span>
+                    <a href="https://drive.google.com/drive/folders/1fBxRFq9pSvSWCgWoeWJPrg5jqkCXK_MA" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl shadow-lg shadow-orange-500/30 transition-all font-black text-sm hover:-translate-y-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                        <span class="hidden sm:inline tracking-wider">LAPORAN</span>
                     </a>
                     <button onclick="resetApp()" class="flex items-center gap-2 px-4 py-2 bg-white/50 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-xl shadow-sm border border-slate-200 transition-all font-bold text-sm hover:-translate-y-0.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
@@ -178,7 +190,7 @@
             <div class="flex flex-col max-w-3xl mx-auto relative gap-4">
                 
                 <!-- Panel 1: Pelayanan -->
-                <div id="card-pelayanan" class="glass-panel transition-all duration-700 rounded-[2.5rem] p-10 md:p-14 relative z-30 upload-card-active transform hover:-translate-y-1">
+                <div id="card-pelayanan" class="glass-panel bg-glass-blue transition-all duration-700 rounded-[2.5rem] p-10 md:p-14 relative z-30 upload-card-active transform hover:-translate-y-1">
                     <div id="pelayanan-large" class="flex flex-col items-center text-center transition-all duration-500 opacity-100 scale-100">
                         <div class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-indigo-50 rounded-[1.5rem] flex items-center justify-center mb-6 shadow-sm border border-indigo-100 relative">
                             <div class="absolute -top-2 -right-2 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-black border-4 border-white shadow-sm z-10">1</div>
@@ -204,7 +216,7 @@
                 </div>
 
                 <!-- Panel 2: CKG -->
-                <div id="card-ckg" class="glass-panel transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-20">
+                <div id="card-ckg" class="glass-panel bg-glass-green transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-20">
                     <div id="ckg-small" class="flex items-center gap-5 transition-all duration-500 opacity-100">
                         <div class="w-14 h-14 bg-slate-200/60 rounded-2xl flex items-center justify-center shrink-0 border border-slate-300 relative">
                              <div class="absolute -top-2 -right-2 w-7 h-7 bg-slate-300 rounded-full flex items-center justify-center text-white font-bold border-[3px] border-white z-10 text-xs">2</div>
@@ -238,7 +250,7 @@
                 </div>
 
                 <!-- Panel 3: Laboratorium -->
-                <div id="card-lab" class="glass-panel transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-10">
+                <div id="card-lab" class="glass-panel bg-glass-red transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-10">
                     <div id="lab-small" class="flex items-center gap-5 transition-all duration-500 opacity-100">
                         <div class="w-14 h-14 bg-slate-200/60 rounded-2xl flex items-center justify-center shrink-0 border border-slate-300 relative">
                              <div class="absolute -top-2 -right-2 w-7 h-7 bg-slate-300 rounded-full flex items-center justify-center text-white font-bold border-[3px] border-white z-10 text-xs">3</div>
@@ -263,11 +275,16 @@
 
             </div>
             
-            <!-- Indikator Loading Dinamis -->
-            <div id="upload-status" class="hidden max-w-2xl mx-auto mt-8 glass-panel px-8 py-5 rounded-2xl text-center shadow-lg transform transition-all">
-                <div id="status-content" class="flex items-center justify-center gap-4">
-                    <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span id="status-text" class="text-lg font-bold text-indigo-800 animate-pulse tracking-wide">Menyiapkan Mesin Analitik...</span>
+            <!-- Indikator Loading Dinamis (Beranimasi Ekstra) -->
+            <div id="upload-status" class="hidden max-w-2xl mx-auto mt-10 glass-panel px-10 py-8 rounded-[2rem] text-center shadow-[0_20px_50px_rgba(79,70,229,0.15)] transform transition-all border border-indigo-200 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-emerald-500/10 to-rose-500/10 animate-pulse"></div>
+                <div id="status-content" class="flex flex-col items-center justify-center gap-6 relative z-10">
+                    <div class="loader-bars flex gap-3 items-end h-14">
+                        <div class="w-3.5 h-full bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.6)]"></div>
+                        <div class="w-3.5 h-full bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.6)]"></div>
+                        <div class="w-3.5 h-full bg-rose-500 rounded-full shadow-[0_0_15px_rgba(244,63,94,0.6)]"></div>
+                    </div>
+                    <span id="status-text" class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-700 tracking-wide">Menyiapkan Mesin Analitik...</span>
                 </div>
             </div>
         </section>
@@ -289,12 +306,12 @@
                         
                         <div class="mt-10 no-print flex flex-wrap gap-4 justify-center lg:justify-start">
                             <button onclick="exportToExcel()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl font-black shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-3 transform hover:-translate-y-1 transition-all"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>Cetak Laporan Global (Excel)</button>
-                            <button onclick="exportSPMByName()" class="px-8 py-4 bg-white text-indigo-700 hover:bg-indigo-50 border-2 border-indigo-100 rounded-2xl font-black shadow-sm flex items-center justify-center gap-3 transform hover:-translate-y-1 transition-all"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Unduh SPM By Name</button>
+                            <button onclick="exportSPMByName()" class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-2xl font-black shadow-lg shadow-blue-500/30 flex items-center justify-center gap-3 transform hover:-translate-y-1 transition-all"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Unduh SPM By Name</button>
                             
                             <!-- Tombol Salin Cepat -->
                             <div class="flex gap-4 w-full sm:w-auto">
-                                <button onclick="copyDataToClipboard('HT', this)" class="flex-1 sm:flex-none px-6 py-4 bg-rose-50 text-rose-700 hover:bg-rose-100 border-2 border-rose-100 rounded-2xl font-black shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-1 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>Salin HT</button>
-                                <button onclick="copyDataToClipboard('DM', this)" class="flex-1 sm:flex-none px-6 py-4 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-2 border-emerald-100 rounded-2xl font-black shadow-sm flex items-center justify-center gap-2 transform hover:-translate-y-1 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>Salin DM</button>
+                                <button onclick="copyDataToClipboard('HT', this)" class="flex-1 sm:flex-none px-6 py-4 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white rounded-2xl font-black shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 transform hover:-translate-y-1 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>Salin HT</button>
+                                <button onclick="copyDataToClipboard('DM', this)" class="flex-1 sm:flex-none px-6 py-4 bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white rounded-2xl font-black shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 transform hover:-translate-y-1 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>Salin DM</button>
                             </div>
                         </div>
                     </div>
@@ -480,18 +497,18 @@
             
             // Reset UI States
             const cPel = document.getElementById('card-pelayanan');
-            cPel.className = "glass-panel transition-all duration-700 rounded-[2.5rem] p-10 md:p-14 relative z-30 upload-card-active transform hover:-translate-y-1";
+            cPel.className = "glass-panel bg-glass-blue transition-all duration-700 rounded-[2.5rem] p-10 md:p-14 relative z-30 upload-card-active transform hover:-translate-y-1";
             document.getElementById('pelayanan-large').className = "flex flex-col items-center text-center opacity-100 scale-100";
             document.getElementById('pelayanan-small').className = "hidden flex-col sm:flex-row items-center justify-between gap-4 opacity-0";
             
             const cCKG = document.getElementById('card-ckg');
-            cCKG.className = "glass-panel transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-20";
+            cCKG.className = "glass-panel bg-glass-green transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-20";
             document.getElementById('ckg-small').className = "flex items-center gap-5 opacity-100";
             document.getElementById('ckg-large').className = "hidden flex-col items-center text-center opacity-0 scale-95";
             document.getElementById('ckg-done').className = "hidden flex-col sm:flex-row items-center justify-between gap-4 opacity-0";
             
             const cLab = document.getElementById('card-lab');
-            cLab.className = "glass-panel transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-10";
+            cLab.className = "glass-panel bg-glass-red transition-all duration-700 rounded-[1.5rem] p-6 opacity-60 scale-[0.98] grayscale pointer-events-none relative z-10";
             document.getElementById('lab-small').className = "flex items-center gap-5 opacity-100";
             document.getElementById('lab-large').className = "hidden flex-col items-center text-center opacity-0 scale-95";
 
@@ -599,7 +616,7 @@
             setTimeout(() => {
                 pL.classList.add('hidden'); pS.classList.replace('hidden', 'flex');
                 cPel.classList.remove('p-10', 'md:p-14', 'rounded-[2.5rem]', 'upload-card-active', 'transform', 'hover:-translate-y-1'); 
-                cPel.classList.add('p-6', 'rounded-[1.5rem]', 'opacity-80', 'bg-white/40');
+                cPel.classList.add('p-6', 'rounded-[1.5rem]', 'opacity-80');
                 pS.classList.replace('opacity-0', 'opacity-100');
                 
                 cCKG.classList.remove('opacity-60', 'grayscale', 'pointer-events-none', 'scale-[0.98]', 'rounded-[1.5rem]');
@@ -657,7 +674,7 @@
             setTimeout(() => {
                 cL.classList.add('hidden'); cD.classList.replace('hidden', 'flex');
                 cCKG.classList.remove('p-10', 'md:p-14', 'rounded-[2.5rem]', 'upload-card-active', 'transform', 'hover:-translate-y-1'); 
-                cCKG.classList.add('p-6', 'rounded-[1.5rem]', 'opacity-80', 'bg-white/40');
+                cCKG.classList.add('p-6', 'rounded-[1.5rem]', 'opacity-80');
                 cD.classList.replace('opacity-0', 'opacity-100');
                 
                 cLab.classList.remove('opacity-60', 'grayscale', 'pointer-events-none', 'scale-[0.98]', 'rounded-[1.5rem]');
@@ -887,12 +904,14 @@
                 document.execCommand('copy');
                 // Mengubah UI Tombol saat berhasil
                 const originalHTML = btnElement.innerHTML;
+                const originalBg = btnElement.className;
+                
                 btnElement.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> Tersalin!`;
-                btnElement.classList.add('bg-green-100', 'text-green-700', 'border-green-300');
+                btnElement.className = "flex-1 sm:flex-none px-6 py-4 bg-gradient-to-r from-lime-500 to-green-500 text-white rounded-2xl font-black shadow-lg shadow-green-500/30 flex items-center justify-center gap-2 transform transition-all";
                 
                 setTimeout(() => { 
                     btnElement.innerHTML = originalHTML; 
-                    btnElement.classList.remove('bg-green-100', 'text-green-700', 'border-green-300');
+                    btnElement.className = originalBg;
                 }, 2000);
             } catch (err) {
                 console.error('Gagal menyalin data:', err);
