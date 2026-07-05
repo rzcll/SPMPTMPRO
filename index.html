@@ -1,3 +1,5 @@
+dengan tidak mengubah logika pada aplikasi 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -433,7 +435,7 @@
                 }).withFailureHandler(() => { 
                     loginBtn.innerHTML = originalHTML; loginBtn.disabled = false; showLoginError("Error sistem!"); 
                 }).checkUsername(username);
-            } else if (WEB_APP_URL && WEB_APP_URL !== "MASUKKAN_URL_WEB_APP_GAS_DISINI") {
+            } else if (WEB_APP_URL && WEB_APP_URL !== "https://script.google.com/macros/s/AKfycbzyLSzwZ0qO_1ZD_2a_9dg-925OeiSotwlV0NgJoQn7Je7IUQhLl97Jcd8CiL4vN-4e/exec") {
                 fetch(`${WEB_APP_URL}?username=${encodeURIComponent(username)}`)
                     .then(response => response.json())
                     .then(isValid => {
