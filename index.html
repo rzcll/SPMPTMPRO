@@ -1,5 +1,3 @@
-dengan tidak mengubah logika pada aplikasi 
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -317,6 +315,7 @@ dengan tidak mengubah logika pada aplikasi
                             </div>
                         </div>
                     </div>
+                    
                     <div class="w-full lg:w-5/12 flex flex-col gap-4">
                         <div class="glass-card-hover bg-white/70 p-6 rounded-[1.5rem] flex justify-between items-center border border-white">
                             <div class="flex items-center gap-4">
@@ -412,9 +411,10 @@ dengan tidak mengubah logika pada aplikasi
         &copy; 2024 SPM Analytics Pro • <span class="text-indigo-600">Puskesmas Terpadu</span>
     </footer>
 
-    <!-- LOGIKA JAVASCRIPT UTAMA (TIDAK ADA PERUBAHAN LOGIKA DARI VERSI SEBELUMNYA) -->
+    <!-- LOGIKA JAVASCRIPT UTAMA -->
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby5-EXWwFqhubIykK9EaWylEXY6CHzViHpsYzL_rJ3Uk_K272nMP5z_aZQOlznoDfRqvQ/exec"; 
+        // URL Web App Google Apps Script telah diperbarui sesuai permintaan
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzyLSzwZ0qO_1ZD_2a_9dg-925OeiSotwlV0NgJoQn7Je7IUQhLl97Jcd8CiL4vN-4e/exec"; 
         
         let loggedInUser = ""; 
 
@@ -428,6 +428,7 @@ dengan tidak mengubah logika pada aplikasi
             loginBtn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memeriksa Akses...`;
             loginBtn.disabled = true;
 
+            // Mengecek apakah berjalan di dalam environment Google Apps Script (HTML Service)
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run.withSuccessHandler(function(isValid) {
                     loginBtn.innerHTML = originalHTML; loginBtn.disabled = false;
@@ -435,7 +436,9 @@ dengan tidak mengubah logika pada aplikasi
                 }).withFailureHandler(() => { 
                     loginBtn.innerHTML = originalHTML; loginBtn.disabled = false; showLoginError("Error sistem!"); 
                 }).checkUsername(username);
-            } else if (WEB_APP_URL && WEB_APP_URL !== "https://script.google.com/macros/s/AKfycbzyLSzwZ0qO_1ZD_2a_9dg-925OeiSotwlV0NgJoQn7Je7IUQhLl97Jcd8CiL4vN-4e/exec") {
+            } 
+            // Mengecek validasi ke Web App Google Apps Script eksternal menggunakan URL baru
+            else if (WEB_APP_URL) {
                 fetch(`${WEB_APP_URL}?username=${encodeURIComponent(username)}`)
                     .then(response => response.json())
                     .then(isValid => {
@@ -445,6 +448,7 @@ dengan tidak mengubah logika pada aplikasi
                         loginBtn.innerHTML = originalHTML; loginBtn.disabled = false; showLoginError("Gagal menghubungi server!");
                     });
             } else {
+                // Fallback (Offline/Local)
                 setTimeout(() => {
                     loginBtn.innerHTML = originalHTML; loginBtn.disabled = false;
                     if (["admin", "tumpang", "tajinan", "poncokusumo"].includes(username.toLowerCase())) proceedLogin(username);
