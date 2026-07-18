@@ -96,7 +96,6 @@
     </style>
 </head>
 <body class="min-h-screen overflow-hidden" id="body-container">
-
     <!-- Modal Data Tidak Valid -->
     <div id="invalid-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-slate-900/80 backdrop-blur-lg smooth-overlay opacity-0 px-4">
         <div id="invalid-modal-card" class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-center max-w-md w-full transform scale-90 transition-all duration-400">
@@ -730,7 +729,7 @@
                     if (p.diag.some(c => HT_CODES.includes(c)) && !seenHT.has(p.id)) {
                         if (p.gender === 'L') summary.ht.pel_L++; else summary.ht.pel_P++;
                         seenHT.add(p.id); 
-                        exportHT.push({ "No": exportHT.length + 1, "ID": p.id, "Nama": p.nama, "Tensi": p.tensi, "Ket_E": "Ya", "Obat_HT": p.obatHT, "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan Puskesmas" });
+                        exportHT.push({ "No": exportHT.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Tensi": p.tensi, "Ket_E": "Ya", "Obat_HT": p.obatHT, "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
                         if (!summary.ht.desa[p.desa]) summary.ht.desa[p.desa] = { L: 0, P: 0, Total: 0 };
                         if (p.gender === 'L') summary.ht.desa[p.desa].L++; else if (p.gender === 'P') summary.ht.desa[p.desa].P++;
                         summary.ht.desa[p.desa].Total++;
@@ -739,7 +738,7 @@
                         if (p.gender === 'L') summary.dm.pel_L++; else summary.dm.pel_P++;
                         seenDM.add(p.id); 
                         const gulaDarah = labMap[p.id] || "-";
-                        exportDM.push({ "No": exportDM.length + 1, "ID": p.id, "Nama": p.nama, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": p.obatDM, "Status": "Sudah Terlayani", "Sumber": "Pelayanan Puskesmas" });
+                        exportDM.push({ "No": exportDM.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": p.obatDM, "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
                         if (!summary.dm.desa[p.desa]) summary.dm.desa[p.desa] = { L: 0, P: 0, Total: 0 };
                         if (p.gender === 'L') summary.dm.desa[p.desa].L++; else if (p.gender === 'P') summary.dm.desa[p.desa].P++;
                         summary.dm.desa[p.desa].Total++;
@@ -761,7 +760,7 @@
                         if (c.ht && !seenHT.has(c.id)) {
                             if (c.gender === 'L') summary.ht.ckg_L++; else summary.ht.ckg_P++;
                             seenHT.add(c.id); 
-                            exportHT.push({ "No": exportHT.length + 1, "ID": c.id, "Nama": c.nama, "Tensi": c.tensi, "Ket_E": "Ya", "Obat_HT": "Ya", "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan Puskesmas" });
+                            exportHT.push({ "No": exportHT.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Tensi": c.tensi, "Ket_E": "Ya", "Obat_HT": "Ya", "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
                             if (!summary.ht.desa[c.desa]) summary.ht.desa[c.desa] = { L: 0, P: 0, Total: 0 };
                             if (c.gender === 'L') summary.ht.desa[c.desa].L++; else if (c.gender === 'P') summary.ht.desa[c.desa].P++;
                             summary.ht.desa[c.desa].Total++;
@@ -770,7 +769,7 @@
                             if (c.gender === 'L') summary.dm.ckg_L++; else summary.dm.ckg_P++;
                             seenDM.add(c.id); 
                             let gulaDarah = labMap[c.id] || "-"; if (gulaDarah === "-" && c.cnVal !== "-") gulaDarah = c.cnVal; 
-                            exportDM.push({ "No": exportDM.length + 1, "ID": c.id, "Nama": c.nama, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan Puskesmas" });
+                            exportDM.push({ "No": exportDM.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
                             if (!summary.dm.desa[c.desa]) summary.dm.desa[c.desa] = { L: 0, P: 0, Total: 0 };
                             if (c.gender === 'L') summary.dm.desa[c.desa].L++; else if (c.gender === 'P') summary.dm.desa[c.desa].P++;
                             summary.dm.desa[c.desa].Total++;
@@ -849,9 +848,9 @@
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(formatDesaSPM(summary.dm.desa)), "Desa_DM");
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(exportUSPRO), "Daftar_Pasien_USPRO");
             
-            // Format Array Object (menghilangkan kunci yang dikosongi dengan cara remap agar Excel tidak bingung)
-            const mapDM = exportDM.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Gula_Darah": row.Gula_Darah, "Ket_E": row.Ket_E, "Ket_F": row.Ket_F, "Obat_DM": row.Obat_DM, "Status": row.Status, "Sumber": row.Sumber }));
-            const mapHT = exportHT.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Tensi": row.Tensi, "Ket_E": row.Ket_E, "Obat_HT": row.Obat_HT, "Ket_G": row.Ket_G, "Status": row.Status, "Sumber": row.Sumber }));
+            // Format Array Object (dibuat menyesuaikan dengan daftar USPRO khusus pada export global ini)
+            const mapDM = exportDM.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber }));
+            const mapHT = exportHT.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber }));
 
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapHT), "Daftar_Pasien_HT");
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapDM), "Daftar_Pasien_DM");
@@ -867,6 +866,7 @@
             if (exportUSPRO.length === 0 && exportHT.length === 0 && exportDM.length === 0) return;
             const wb = XLSX.utils.book_new();
             
+            // Untuk menu By Name, data tetap diekstrak komplit dengan seluruh field-nya
             const mapDM = exportDM.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Gula_Darah": row.Gula_Darah, "Ket_E": row.Ket_E, "Ket_F": row.Ket_F, "Obat_DM": row.Obat_DM, "Status": row.Status, "Sumber": row.Sumber }));
             const mapHT = exportHT.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Tensi": row.Tensi, "Ket_E": row.Ket_E, "Obat_HT": row.Obat_HT, "Ket_G": row.Ket_G, "Status": row.Status, "Sumber": row.Sumber }));
 
