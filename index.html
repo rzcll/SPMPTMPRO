@@ -479,7 +479,8 @@
         let desaAnalysisGlobal = { pelayananP: {}, ckgLansiaF: {}, ckgDewasaF: {} };
         let labMap = {};
 
-        const COLS_PEL = { C: 2, E: 4, I: 8, P: 15, S: 18, BL: 63, BO: 66, BR: 69, BU: 72, BX: 75 };
+        // COLS_PEL di-update menambahkan Kolom R (index 17) untuk menarik data Tanggal Lahir
+        const COLS_PEL = { C: 2, E: 4, I: 8, P: 15, R: 17, S: 18, BL: 63, BO: 66, BR: 69, BU: 72, BX: 75 };
         const HT_CODES = ['I10', 'I11', 'I11.0', 'I11.9', 'I15'];
         const DM_CODES = ['E11', 'E11.1', 'E11.2', 'E11.3', 'E11.4', 'E11.5', 'E11.6', 'E11.7', 'E11.8', 'E11.9'];
 
@@ -570,7 +571,27 @@
             return filtered.length > 0 ? filtered.join(" | ") : "Ya";
         }
 
-        function getAgeFromExcel(v) { if (!v) return 0; const dob = typeof v === 'number' ? new Date((v - 25569) * 86400 * 1000) : new Date(v); const today = new Date(); let age = today.getFullYear() - dob.getFullYear(); if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) age--; return age; }
+        function getAgeFromExcel(v) { 
+            if (!v) return 0; 
+            const dob = typeof v === 'number' ? new Date((v - 25569) * 86400 * 1000) : new Date(v); 
+            const today = new Date(); 
+            let age = today.getFullYear() - dob.getFullYear(); 
+            if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) age--; 
+            return age; 
+        }
+
+        // Helper untuk memformat Tanggal Lahir dari Excel (baik sebagai serial number atau teks biasa)
+        function formatDateFromExcel(v) {
+            if (!v) return '-';
+            if (typeof v === 'number') {
+                const dob = new Date((v - 25569) * 86400 * 1000);
+                const dd = String(dob.getDate()).padStart(2, '0');
+                const mm = String(dob.getMonth() + 1).padStart(2, '0');
+                const yyyy = dob.getFullYear();
+                return `${dd}/${mm}/${yyyy}`;
+            }
+            return String(v).trim();
+        }
 
         // PROSES PELAYANAN
         async function handlePelayananUpload(event) {
@@ -603,7 +624,8 @@
                         gender: (jk.includes('L') || jk === '1') ? 'L' : (jk.includes('P') || jk === '2' ? 'P' : ''),
                         age: parseInt(r[COLS_PEL.S]) || 0, desa: String(r[COLS_PEL.P] || 'TANPA DESA').trim().toUpperCase(),
                         diag: [r[COLS_PEL.BL], r[COLS_PEL.BO], r[COLS_PEL.BR], r[COLS_PEL.BU], r[COLS_PEL.BX]].map(v => String(v || '').trim()),
-                        tensi: getTensiString(r[55], r[56]), obatDM: extractObatDM(String(r[79] || '')), obatHT: extractObatHT(String(r[79] || ''))
+                        tensi: getTensiString(r[55], r[56]), obatDM: extractObatDM(String(r[79] || '')), obatHT: extractObatHT(String(r[79] || '')),
+                        tglLahir: formatDateFromExcel(r[COLS_PEL.R]) // Menarik Tanggal Lahir (Kolom R)
                     });
                 }
             }
@@ -656,13 +678,13 @@
                     }
                     if (isSekolah) {
                         if (!r[21]) continue;
-                        masterCKG.push({ type: 'sekolah', id: String(r[21]).trim(), nama: String(r[17] || '').trim(), gender: (String(r[24]||'').toUpperCase().includes('L') ? 'L' : 'P'), age: getAgeFromExcel(r[23]), desa: 'SEKOLAH (TANPA DESA)', tensi: '-', cnVal: '-' });
+                        masterCKG.push({ type: 'sekolah', id: String(r[21]).trim(), nama: String(r[17] || '').trim(), gender: (String(r[24]||'').toUpperCase().includes('L') ? 'L' : 'P'), age: getAgeFromExcel(r[23]), desa: 'SEKOLAH (TANPA DESA)', tensi: '-', cnVal: '-', tglLahir: formatDateFromExcel(r[18]) });
                     } else {
                         if (!r[16]) continue;
                         let tensiData = '-'; let nilaiCN = '-';
                         if (isDewasa) { tensiData = getTensiString(r[83], r[84]); if (r[91]) nilaiCN = String(r[91]).trim(); } 
                         else if (isLansia) { tensiData = getTensiString(r[78], r[79]); if (r[86]) nilaiCN = String(r[86]).trim(); }
-                        masterCKG.push({ type: 'dewasa_lansia', id: String(r[16]).trim(), nama: String(r[17] || '').trim(), gender: (String(r[19]||'').toUpperCase().includes('L') ? 'L' : 'P'), ht: String(isDewasa ? r[82] : r[77] || '').trim() === "Ya", dm: String(isDewasa ? r[89] : r[84] || '').trim() === "Ya", desa: String(r[5] || 'TANPA DESA').trim().toUpperCase(), tensi: tensiData, cnVal: nilaiCN });
+                        masterCKG.push({ type: 'dewasa_lansia', id: String(r[16]).trim(), nama: String(r[17] || '').trim(), gender: (String(r[19]||'').toUpperCase().includes('L') ? 'L' : 'P'), ht: String(isDewasa ? r[82] : r[77] || '').trim() === "Ya", dm: String(isDewasa ? r[89] : r[84] || '').trim() === "Ya", desa: String(r[5] || 'TANPA DESA').trim().toUpperCase(), tensi: tensiData, cnVal: nilaiCN, tglLahir: formatDateFromExcel(r[18]) });
                     }
                 }
             }
@@ -721,7 +743,9 @@
                     pelIDs.add(p.id);
                     if (p.age >= 15 && p.age <= 59 && !seenUspro.has(p.id)) {
                         if (p.gender === 'L') summary.uspro.pel_L++; else summary.uspro.pel_P++;
-                        seenUspro.add(p.id); exportUSPRO.push({ ID: p.id, Nama: p.nama, JK: p.gender, Usia: p.age, Desa: p.desa, Sumber: "Pelayanan" });
+                        seenUspro.add(p.id); 
+                        // Menambahkan Tanggal Lahir (pastikan properti ini urutan ke-7 / Kolom G)
+                        exportUSPRO.push({ ID: p.id, Nama: p.nama, JK: p.gender, Usia: p.age, Desa: p.desa, Sumber: "Pelayanan", "Tanggal Lahir": p.tglLahir });
                         if (!summary.uspro.desa[p.desa]) summary.uspro.desa[p.desa] = { L: 0, P: 0, Total: 0 };
                         if (p.gender === 'L') summary.uspro.desa[p.desa].L++; else if (p.gender === 'P') summary.uspro.desa[p.desa].P++;
                         summary.uspro.desa[p.desa].Total++;
@@ -729,7 +753,8 @@
                     if (p.diag.some(c => HT_CODES.includes(c)) && !seenHT.has(p.id)) {
                         if (p.gender === 'L') summary.ht.pel_L++; else summary.ht.pel_P++;
                         seenHT.add(p.id); 
-                        exportHT.push({ "No": exportHT.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Tensi": p.tensi, "Ket_E": "Ya", "Obat_HT": p.obatHT, "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
+                        // Menambahkan Tanggal Lahir
+                        exportHT.push({ "No": exportHT.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Tanggal Lahir": p.tglLahir, "Tensi": p.tensi, "Ket_E": "Ya", "Obat_HT": p.obatHT, "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
                         if (!summary.ht.desa[p.desa]) summary.ht.desa[p.desa] = { L: 0, P: 0, Total: 0 };
                         if (p.gender === 'L') summary.ht.desa[p.desa].L++; else if (p.gender === 'P') summary.ht.desa[p.desa].P++;
                         summary.ht.desa[p.desa].Total++;
@@ -738,7 +763,8 @@
                         if (p.gender === 'L') summary.dm.pel_L++; else summary.dm.pel_P++;
                         seenDM.add(p.id); 
                         const gulaDarah = labMap[p.id] || "-";
-                        exportDM.push({ "No": exportDM.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": p.obatDM, "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
+                        // Menambahkan Tanggal Lahir
+                        exportDM.push({ "No": exportDM.length + 1, "ID": p.id, "Nama": p.nama, "JK": p.gender, "Usia": p.age, "Desa": p.desa, "Tanggal Lahir": p.tglLahir, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": p.obatDM, "Status": "Sudah Terlayani", "Sumber": "Pelayanan" });
                         if (!summary.dm.desa[p.desa]) summary.dm.desa[p.desa] = { L: 0, P: 0, Total: 0 };
                         if (p.gender === 'L') summary.dm.desa[p.desa].L++; else if (p.gender === 'P') summary.dm.desa[p.desa].P++;
                         summary.dm.desa[p.desa].Total++;
@@ -750,7 +776,8 @@
                     if (!pelIDs.has(c.id) && !seenCKGOnly.has(c.id)) {
                         if (c.type === 'dewasa_lansia' || (c.type === 'sekolah' && c.age >= 15 && c.age <= 59)) {
                             if (c.gender === 'L') summary.uspro.ckg_L++; else summary.uspro.ckg_P++;
-                            seenCKGOnly.add(c.id); exportUSPRO.push({ ID: c.id, Nama: c.nama, JK: c.gender, Usia: c.age||'-', Desa: c.desa, Sumber: "CKG" });
+                            seenCKGOnly.add(c.id); 
+                            exportUSPRO.push({ ID: c.id, Nama: c.nama, JK: c.gender, Usia: c.age||'-', Desa: c.desa, Sumber: "CKG", "Tanggal Lahir": c.tglLahir });
                             if (!summary.uspro.desa[c.desa]) summary.uspro.desa[c.desa] = { L: 0, P: 0, Total: 0 };
                             if (c.gender === 'L') summary.uspro.desa[c.desa].L++; else if (c.gender === 'P') summary.uspro.desa[c.desa].P++;
                             summary.uspro.desa[c.desa].Total++;
@@ -760,7 +787,7 @@
                         if (c.ht && !seenHT.has(c.id)) {
                             if (c.gender === 'L') summary.ht.ckg_L++; else summary.ht.ckg_P++;
                             seenHT.add(c.id); 
-                            exportHT.push({ "No": exportHT.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Tensi": c.tensi, "Ket_E": "Ya", "Obat_HT": "Ya", "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
+                            exportHT.push({ "No": exportHT.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Tanggal Lahir": c.tglLahir, "Tensi": c.tensi, "Ket_E": "Ya", "Obat_HT": "Ya", "Ket_G": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
                             if (!summary.ht.desa[c.desa]) summary.ht.desa[c.desa] = { L: 0, P: 0, Total: 0 };
                             if (c.gender === 'L') summary.ht.desa[c.desa].L++; else if (c.gender === 'P') summary.ht.desa[c.desa].P++;
                             summary.ht.desa[c.desa].Total++;
@@ -769,7 +796,7 @@
                             if (c.gender === 'L') summary.dm.ckg_L++; else summary.dm.ckg_P++;
                             seenDM.add(c.id); 
                             let gulaDarah = labMap[c.id] || "-"; if (gulaDarah === "-" && c.cnVal !== "-") gulaDarah = c.cnVal; 
-                            exportDM.push({ "No": exportDM.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
+                            exportDM.push({ "No": exportDM.length + 1, "ID": c.id, "Nama": c.nama, "JK": c.gender, "Usia": c.age || '-', "Desa": c.desa, "Tanggal Lahir": c.tglLahir, "Gula_Darah": gulaDarah, "Ket_E": "Tidak ada", "Ket_F": "Tidak", "Obat_DM": "Ya", "Status": "Sudah Terlayani", "Sumber": "CKG" });
                             if (!summary.dm.desa[c.desa]) summary.dm.desa[c.desa] = { L: 0, P: 0, Total: 0 };
                             if (c.gender === 'L') summary.dm.desa[c.desa].L++; else if (c.gender === 'P') summary.dm.desa[c.desa].P++;
                             summary.dm.desa[c.desa].Total++;
@@ -846,11 +873,13 @@
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(formatDesaSPM(summary.uspro.desa)), "Desa_USPRO");
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(formatDesaSPM(summary.ht.desa)), "Desa_HT");
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(formatDesaSPM(summary.dm.desa)), "Desa_DM");
+            
+            // exportUSPRO sudah ter-generate natural menempatkan Tanggal Lahir pada key/Kolom G
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(exportUSPRO), "Daftar_Pasien_USPRO");
             
-            // Format Array Object (dibuat menyesuaikan dengan daftar USPRO khusus pada export global ini)
-            const mapDM = exportDM.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber }));
-            const mapHT = exportHT.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber }));
+            // Mapping objek untuk memposisikan properti Tanggal Lahir tepat menjadi index ke 7 (Kolom G) untuk HT dan DM 
+            const mapDM = exportDM.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber, "Tanggal Lahir": row["Tanggal Lahir"] }));
+            const mapHT = exportHT.map(row => ({ "ID": row.ID, "Nama": row.Nama, "JK": row.JK, "Usia": row.Usia, "Desa": row.Desa, "Sumber": row.Sumber, "Tanggal Lahir": row["Tanggal Lahir"] }));
 
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapHT), "Daftar_Pasien_HT");
             XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mapDM), "Daftar_Pasien_DM");
@@ -866,7 +895,7 @@
             if (exportUSPRO.length === 0 && exportHT.length === 0 && exportDM.length === 0) return;
             const wb = XLSX.utils.book_new();
             
-            // Untuk menu By Name, data tetap diekstrak komplit dengan seluruh field-nya
+            // Laporan SPM By Name tetap dengan konfigurasi asal
             const mapDM = exportDM.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Gula_Darah": row.Gula_Darah, "Ket_E": row.Ket_E, "Ket_F": row.Ket_F, "Obat_DM": row.Obat_DM, "Status": row.Status, "Sumber": row.Sumber }));
             const mapHT = exportHT.map(row => ({ "No": row.No, "ID": row.ID, "Nama": row.Nama, "Tensi": row.Tensi, "Ket_E": row.Ket_E, "Obat_HT": row.Obat_HT, "Ket_G": row.Ket_G, "Status": row.Status, "Sumber": row.Sumber }));
 
